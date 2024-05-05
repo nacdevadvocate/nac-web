@@ -1,0 +1,205 @@
+#header {
+    background-color: teal;
+    height: 10vh;
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+    height: 100%;
+}
+
+.title {
+    text-align: center;
+    font-size: 28px;
+
+}
+
+.btnContainer {
+    width: 100%;
+    text-align: center;
+}
+
+.btn {
+    color: white;
+    padding: .75rem 2.5rem;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 1.2rem;
+    font-family: 'Roboto Slab', serif;
+    letter-spacing: 0.2px;
+}
+
+.btn:disabled {
+    cursor: not-allowed;
+    outline: none;
+    transition: background-color 0.3s ease;
+    background-color: #065f7a;
+}
+
+.btn-masterful {
+    background-color: teal;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 50px;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-masterful .icon {
+    position: absolute;
+    top: 50%;
+    left: 8px;
+    transform: translateY(-50%);
+    font-size: 24px;
+}
+
+.btn-masterful .btnTxt {
+    padding-left: .5rem;
+}
+
+.btn-masterful:hover {
+    background-color: rgb(7, 104, 104);
+}
+
+.btn-masterful:hover .icon {
+    animation: rotate 2s linear infinite;
+}
+
+@keyframes rotate {
+    from {
+        transform: translateY(-50%) rotate(0deg);
+    }
+
+    to {
+        transform: translateY(-50%) rotate(360deg);
+    }
+}
+
+.attribute {
+    position: absolute;
+    bottom: 10px;
+}
+
+.centerDiv {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    margin: 4rem 0;
+    width: 100%;
+}
+
+.content {
+    padding: 1rem;
+}
+
+.modalHeader {
+    color: black;
+}
+
+.categoryBody>div {
+    background-color: transparent;
+}
+
+.categoryBody .modal {
+    padding-bottom: 0;
+}
+
+.categoryDelTxt {
+    color: black;
+}
+
+.modalHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.icon {
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+}
+
+.closeIcon {
+    cursor: pointer;
+}
+
+.modalBody {
+    padding: 12px 0;
+
+
+    .categoryLabel,
+    .maxAgeLabel,
+    .networkAccessIdentifierLabel {
+        margin-bottom: 8px;
+        display: block;
+        font-size: 14px;
+        color: #333;
+    }
+
+    .categorySelect,
+    .maxAgeInput,
+    .networkAccessIdentifier {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 16px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 16px;
+        color: #333;
+        box-sizing: border-box;
+
+        &:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+    }
+}
+
+.modalFooter {
+    display: flex;
+    justify-content: flex-end;
+    grid-gap: 25px;
+    margin-top: 12px;
+}
+
+
+.btnRetrieve {
+    background: linear-gradient(to right, #065b8b, #024277);
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 10px;
+    box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease-in-out;
+}
+
+.btnCancel {
+    background: linear-gradient(to right, #7a1e06, #d32405);
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 10px;
+    box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease-in-out;
+}
+
+.btnRetrieve:hover,
+.btnCancel:hover {
+    transform: scale(1.1);
+}
+
+.btnRetrieve:hover {
+    transform: scale(1.1);
+}
+
+@media screen and (max-width: 560px) {
+    .container {
+        width: 92%;
+    }
+}

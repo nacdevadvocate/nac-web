@@ -6,3 +6,13 @@ body {
   padding: 0;
   font-family: 'Roboto Slab', serif;
 }
+
+.leaflet-container {
+  height: 600px;
+  width: 100%;
+}
+
+.leaflet-div-icon {
+  background: transparent;
+  border: none;
+}

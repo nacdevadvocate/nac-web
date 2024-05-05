@@ -1,0 +1,200 @@
+.wifiLoader {
+    --background: #62abff;
+    --front-color: #4f29f0;
+    --back-color: #c3c8de;
+    --text-color: #414856;
+    width: 64px;
+    height: 64px;
+    border-radius: 50px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.wifiLoader svg {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.wifiLoader svg circle {
+    position: absolute;
+    fill: none;
+    stroke-width: 6px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transform: rotate(-100deg);
+    transform-origin: center;
+}
+
+.wifiLoader svg .back {
+    stroke: var(--back-color);
+}
+
+.wifiLoader svg .front {
+    stroke: var(--front-color);
+}
+
+.wifiLoader svg.circleOuter {
+    height: 86px;
+    width: 86px;
+}
+
+.wifiLoader .circleOuter circle {
+    stroke-dasharray: 62.75 188.25;
+}
+
+.wifiLoader .circleOuter .back {
+    animation: circle-outer135 1.8s ease infinite 0.3s;
+}
+
+.wifiLoader .circleOuter .front {
+    animation: circle-outer135 1.8s ease infinite 0.15s;
+}
+
+.wifiLoader .circleMiddle {
+    height: 60px;
+    width: 60px;
+}
+
+.wifiLoader .circleMiddle circle {
+    stroke-dasharray: 42.5 127.5;
+}
+
+.wifiLoader .circleMiddle .back {
+    animation: circle-middle6123 1.8s ease infinite 0.25s;
+}
+
+.wifiLoader .circleMiddle .front {
+    animation: circle-middle6123 1.8s ease infinite 0.1s;
+}
+
+.wifiLoader .circleInner {
+    height: 34px;
+    width: 34px;
+}
+
+.wifiLoader .circleInner circle {
+    stroke-dasharray: 22 66;
+}
+
+.wifiLoader .circleInner .back {
+    animation: circle-inner162 1.8s ease infinite 0.2s;
+}
+
+.wifiLoader .circleInner .front {
+    animation: circle-inner162 1.8s ease infinite 0.05s;
+}
+
+.wifiLoader .text {
+    position: absolute;
+    bottom: -42px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    // text-transform: lowercase;
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: 0.2px;
+
+}
+
+.wifiLoader .text::before,
+.wifiLoader .text::after {
+    content: attr(data-text);
+}
+
+.wifiLoader .text::before {
+    color: var(--text-color);
+}
+
+.wifiLoader .text::after {
+    color: var(--front-color);
+    animation: text-animation76 3.6s ease infinite;
+    position: absolute;
+    left: 0;
+    text-align: center;
+}
+
+@keyframes circle-outer135 {
+    0% {
+        stroke-dashoffset: 25;
+    }
+
+    25% {
+        stroke-dashoffset: 0;
+    }
+
+    65% {
+        stroke-dashoffset: 301;
+    }
+
+    80% {
+        stroke-dashoffset: 276;
+    }
+
+    100% {
+        stroke-dashoffset: 276;
+    }
+}
+
+@keyframes circle-middle6123 {
+    0% {
+        stroke-dashoffset: 17;
+    }
+
+    25% {
+        stroke-dashoffset: 0;
+    }
+
+    65% {
+        stroke-dashoffset: 204;
+    }
+
+    80% {
+        stroke-dashoffset: 187;
+    }
+
+    100% {
+        stroke-dashoffset: 187;
+    }
+}
+
+@keyframes circle-inner162 {
+    0% {
+        stroke-dashoffset: 9;
+    }
+
+    25% {
+        stroke-dashoffset: 0;
+    }
+
+    65% {
+        stroke-dashoffset: 106;
+    }
+
+    80% {
+        stroke-dashoffset: 97;
+    }
+
+    100% {
+        stroke-dashoffset: 97;
+    }
+}
+
+@keyframes text-animation76 {
+    0% {
+        clip-path: inset(0 100% 0 0);
+    }
+
+    50% {
+        clip-path: inset(0);
+    }
+
+    100% {
+        clip-path: inset(0 0 0 100%);
+    }
+}
