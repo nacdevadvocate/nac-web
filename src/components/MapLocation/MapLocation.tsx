@@ -12,10 +12,10 @@ type Address = {
 interface MapProps {
     latitude: number;
     longitude: number;
-    address: Address
+    // address: Address
 }
 
-const MapLocation: React.FC<MapProps> = ({ latitude, longitude, address }) => {
+const MapLocation: React.FC<MapProps> = ({ latitude, longitude }) => {
     const [position, setPosition] = useState<[number, number]>([latitude, longitude]);
 
     useEffect(() => {
@@ -30,7 +30,7 @@ const MapLocation: React.FC<MapProps> = ({ latitude, longitude, address }) => {
                 />
                 <Marker position={position}>
                     <Popup>
-                        {address.country}, {address.A1} <br /> {address.A2}
+                        {latitude}  <br />  {longitude}
                     </Popup>
                 </Marker>
             </MapContainer>
