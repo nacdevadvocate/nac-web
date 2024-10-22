@@ -293,3 +293,34 @@
         transform: translateY(0);
     }
 }
+
+.loading {
+    font-size: 1rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+/* Dot animation using keyframes */
+.loading::after {
+    content: '...';
+    animation: dots 1.5s steps(3, end) infinite;
+}
+
+/* Keyframes for the dots animation */
+@keyframes dots {
+    0% {
+        content: '';
+    }
+
+    33% {
+        content: '.';
+    }
+
+    66% {
+        content: '..';
+    }
+
+    100% {
+        content: '...';
+    }
+}

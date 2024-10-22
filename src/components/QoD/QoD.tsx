@@ -17,6 +17,7 @@ const QoD = () => {
     const [storedValue] = useSessionStorageBase64('rpTkn', '');
     const [value, setValue] = useSessionStorage('tab',);
     const [loading, setLoading] = useState<boolean>(false);
+    const [sessionCreateLoading, setSessionCreateLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
     const [data, setData] = useState<any>(null);
     const [viewMode, setViewMode] = useState<'json' | 'table'>('json');
@@ -447,7 +448,7 @@ const QoD = () => {
             console.log('Final sessData:', sessData);
 
 
-            setLoading(true);
+            setSessionCreateLoading(true)
             setError(null);
 
             const sessionCreateOptions = {
@@ -463,9 +464,11 @@ const QoD = () => {
             }
 
             try {
+
                 const response = await axios.request(sessionCreateOptions);
 
                 if (response.status == 201) {
+                    setSessionCreateLoading(false)
                     setSessionData(response.data)
                     setFormValues(initialFormValues);  // Reset to initial values
                     setSessionId(response.data.sessionId)
@@ -538,7 +541,7 @@ const QoD = () => {
                     );
                 }
             } finally {
-                setLoading(false);
+                setSessionCreateLoading(false)
             }
         }
     };
@@ -745,12 +748,20 @@ const QoD = () => {
 
                         </div>
                         <div className={styles.retrieveFooter}>
-                            <button
-                                type="submit"
-                                className={`${styles.btn} ${styles.btnRetrieve}`}
-                            >
-                                Create
-                            </button>
+                            {
+
+                                sessionCreateLoading ?
+                                    <button className={`${styles.btn} ${styles.loading} ${styles.btnRetrieve}`}>Creating</button>
+                                    : <button
+                                        type="submit"
+                                        className={`${styles.btn} ${styles.btnRetrieve}`}
+                                    >
+                                        Create
+                                    </button>
+                            }
+
+
+
                             {/* <button
                                 className={`${styles.btn} ${styles.btnCancel}`}
                                 onClick={() => setIsActive(false)}
@@ -948,6 +959,11 @@ const QoD = () => {
                         )}
 
                     </>
+
+                    {loading && <div className={styles.centerDiv}>
+                        <Loading message="Retrieving all sessions...." />
+                    </div>
+                    }
                 </Tab>
                 <Tab label="Delete session">
                     <div className={styles.idContainer}>
@@ -965,6 +981,11 @@ const QoD = () => {
                             Delete session
                         </button>
                     </div>
+
+                    {loading && <div className={styles.centerDiv}>
+                        <Loading message="Deleting session...." />
+                    </div>
+                    }
                 </Tab>
             </Tabs>
 
