@@ -8,9 +8,10 @@ import axios from "axios";
 import Loading from "../Loading/Loading";
 import { isAxiosError } from "../../utils/isAxiosError";
 import Alert from "../Alert/Alert";
-import { isValidEmail } from "../../utils/isValidEmail";
+import { useSessionStorageBase64 } from "../../hooks/useSessionStorage";
 
 const LocationRet = () => {
+    const [storedValue] = useSessionStorageBase64('rpTkn', '');
     const [isActive, setIsActive] = useState<boolean>(false)
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
@@ -25,8 +26,8 @@ const LocationRet = () => {
     }
 
     const [selectedDevice, setSelectedDevice] = useState("networkAccessIdentifier");
-    const [networkAccessIdentifier, setNetworkAccessIdentifier] = useState("");
-    const [maxAge, setMaxAge] = useState<number | undefined>(undefined);
+    const [deviceValue, setDeviceValue] = useState("");
+    const [maxAge, setMaxAge] = useState<number | undefined>(60);
 
 
     const handleDeviceChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -34,8 +35,8 @@ const LocationRet = () => {
         setSelectedDevice(e.target.value);
     };
 
-    const handleNetworkInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setNetworkAccessIdentifier(e.target.value);
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setDeviceValue(e.target.value);
     };
     const handleMaxAgeInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = parseFloat(e.target.value);
@@ -49,12 +50,15 @@ const LocationRet = () => {
         url: import.meta.env.VITE_LOC_RET_URL,
         headers: {
             'content-type': 'application/json',
-            'X-RapidAPI-Key': import.meta.env.VITE_RapidAPI_Key,
+            'X-RapidAPI-Key': storedValue,
             'X-RapidAPI-Host': import.meta.env.VITE_LOC_RET_HOST
         },
         data: {
             device: {
-                networkAccessIdentifier: networkAccessIdentifier,
+                ...(selectedDevice === "phoneNumber"
+                    ? { phoneNumber: deviceValue }
+                    : { networkAccessIdentifier: deviceValue }
+                )
             },
             maxAge: maxAge
         }
@@ -62,18 +66,15 @@ const LocationRet = () => {
 
     const retrieveLocationHandler = async () => {
         setIsActive(false)
-        if (maxAge && maxAge < 60) {
-            return setError('Max age should be at least 60.');
-        }
 
-        if (!isValidEmail(networkAccessIdentifier.trim())) {
-            return setError('Invalid network access identifier format.');
-        }
-        if (networkAccessIdentifier.trim() === '') {
+        // if (!isValidEmail(deviceValue.trim())) {
+        //     return setError('Invalid network access identifier format.');
+        // }
+        if (deviceValue.trim() === '') {
             return setError('Network access identifier can not be empty.');
         }
         try {
-            console.log({ selectedDevice, networkAccessIdentifier, maxAge })
+            console.log({ selectedDevice, deviceValue, maxAge })
             setLoading(true)
 
             const response = await axios.request(options);
@@ -83,37 +84,54 @@ const LocationRet = () => {
             setData(response.data)
 
         } catch (error) {
-            console.log(error)
+            console.log("Caught error:", error);
+
             if (isAxiosError(error)) {
                 let errorMessage: string;
 
                 if (error.response && error.response.data) {
                     if (error.response.data.detail) {
-                        // Case 1: error.response.data.detail is present
-                        const errorDetails = error.response.data.detail;
+                        const errorDetail = error.response.data.detail;
 
-                        if (Array.isArray(errorDetails) && errorDetails.length > 0 && 'msg' in errorDetails[0]) {
-                            errorMessage = errorDetails.map((errorItem) => errorItem.msg).join(', ');
-                        } else {
+                        // Handle if `detail` is an array of objects with a `msg` property
+                        if (Array.isArray(errorDetail)) {
+                            if (errorDetail.length > 0 && 'msg' in errorDetail[0]) {
+                                errorMessage = errorDetail.map((errorItem) => errorItem.msg).join(', ');
+                            } else {
+                                errorMessage = 'An unexpected error occurred.';
+                            }
+                        }
+                        // Handle if `detail` is a string
+                        else if (typeof errorDetail === 'string') {
+                            errorMessage = errorDetail;
+                        }
+                        // Default case if `detail` is an unexpected structure
+                        else {
                             errorMessage = 'An unexpected error occurred.';
                         }
-                    } else if (error.response.data.message) {
-                        // Case 2: error.response.data.message is present
+                    }
+                    // If `detail` is not present but `message` is
+                    else if (error.response.data.message) {
                         errorMessage = error.response.data.message;
-                    } else {
+                    }
+                    // Default case for other unknown error structures
+                    else {
                         errorMessage = 'An unexpected error occurred.';
                     }
                 } else {
                     errorMessage = 'An unexpected error occurred.';
                 }
 
-                setError(errorMessage);
+                setError(errorMessage.includes("Invalid API key") ? "Invalid API key" : errorMessage,);
             } else {
+                console.log("Error went to else block, not Axios error:", error);
                 setError('An unexpected error occurred.');
             }
         } finally {
             setLoading(false);
         }
+
+
     }
     return (
         <div className={styles.container}>
@@ -140,7 +158,8 @@ const LocationRet = () => {
             {data && <MapLocation
                 latitude={data.area.center?.latitude}
                 longitude={data.area.center?.longitude}
-                address={data.civicAddress} />
+            // address={data.civicAddress} 
+            />
             }
 
 
@@ -155,24 +174,44 @@ const LocationRet = () => {
                     </div>
                     <div className={styles.modalBody}>
                         <label htmlFor="categorySelect" className={styles.categoryLabel}>
-                            Select a device:
+                            Select a device
                         </label>
                         <select id="categorySelect" className={styles.categorySelect} value={selectedDevice} onChange={handleDeviceChange}>
                             <option value="networkAccessIdentifier">Network Access Identifier</option>
-                            <option value="phoneNumber" disabled>Phone Number</option>
+                            <option value="phoneNumber">Phone Number</option>
                         </select>
 
-                        <label htmlFor="networkAccessIdentifier" className={styles.networkAccessIdentifierLabel}>
-                            Network Access Identifier
-                        </label>
-                        <input
-                            type="eamil"
-                            id="networkAccessIdentifier"
-                            className={styles.networkAccessIdentifier}
-                            onChange={handleNetworkInputChange}
-                            value={networkAccessIdentifier}
-                            placeholder="device@testcsp.net"
-                        />
+                        {
+                            selectedDevice == "phoneNumber" ?
+                                <>
+                                    <label htmlFor="phoneNumber" className={styles.networkAccessIdentifierLabel}>
+                                        Phone number
+                                    </label>
+                                    <input
+                                        type="tel"
+                                        id="phoneNumber"
+                                        className={styles.networkAccessIdentifier}
+                                        onChange={handleInputChange}
+                                        value={deviceValue}
+                                        placeholder="+3671234567"
+                                    /></>
+                                :
+                                <>
+                                    <label htmlFor="networkAccessIdentifier" className={styles.networkAccessIdentifierLabel}>
+                                        Network Access Identifier
+                                    </label>
+                                    <input
+                                        type="eamil"
+                                        id="networkAccessIdentifier"
+                                        className={styles.networkAccessIdentifier}
+                                        onChange={handleInputChange}
+                                        value={deviceValue}
+                                        placeholder="device@testcsp.net"
+                                    />
+                                </>
+
+                        }
+
 
                         <label htmlFor="maxAge" className={styles.maxAgeLabel}>
                             Max age

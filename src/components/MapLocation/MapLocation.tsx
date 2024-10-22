@@ -3,16 +3,9 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import styles from "./MapLocation.module.scss";
 
 
-type Address = {
-    A1: string
-    A2: string
-    country: string
-
-}
 interface MapProps {
     latitude: number;
     longitude: number;
-    // address: Address
 }
 
 const MapLocation: React.FC<MapProps> = ({ latitude, longitude }) => {

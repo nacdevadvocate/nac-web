@@ -1,0 +1,295 @@
+.container {
+    width: 80%;
+    margin: 0 auto;
+    min-height: 80vh;
+}
+
+.title {
+    text-align: center;
+    font-size: 28px;
+}
+
+.sessTitle {
+    text-align: center;
+}
+
+.btn {
+    color: white;
+    padding: .75rem 2.5rem;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 1.2rem;
+    font-family: 'Roboto Slab', serif;
+    letter-spacing: 0.2px;
+}
+
+.btn:disabled {
+    cursor: not-allowed;
+    outline: none;
+    transition: background-color 0.3s ease;
+    background-color: #065f7a;
+}
+
+.btns {
+    display: flex;
+    gap: 20px;
+    margin-top: 23px;
+
+}
+
+.btns button {
+    color: white;
+    padding: .75rem 2.5rem;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 1.2rem;
+    font-family: 'Roboto Slab', serif;
+    letter-spacing: 0.2px;
+    background-color: black;
+
+    &:hover {
+        background-color: #0056b3; // Darker on hover
+    }
+}
+
+.btns button.active {
+    background-color: #0056b3; // Active button color
+    font-weight: bold; // Optional: make active button bold
+}
+
+.jsonData {
+    position: relative;
+}
+
+.copyButton {
+    position: absolute;
+    top: 75px;
+    right: 0;
+    border: none;
+    cursor: pointer;
+}
+
+.icon {
+    font-size: 20px;
+}
+
+.jsonOutput {
+    background-color: #f4f4f4;
+    padding: 10px;
+    border-radius: 5px;
+    font-family: 'Courier New', Courier, monospace;
+    /* Monospace font for better readability */
+    white-space: pre-wrap;
+    /* Preserve whitespace and allow word wrapping */
+    word-wrap: break-word;
+    /* Break long words if needed */
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.table th,
+.table td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+}
+
+.table th {
+    background-color: #f4f4f4;
+}
+
+.table tr {
+    opacity: 0;
+    animation: fadeIn 0.8s ease-in forwards;
+    /* Animation on row render */
+    animation-delay: calc(0.1s * var(--i));
+}
+
+.createSessionContainer {
+    width: 100%;
+}
+
+.verifyBody {
+    padding: 12px 0;
+    margin-top: 2rem;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+
+
+    .categoryLabel,
+    .maxAgeLabel,
+    .networkAccessIdentifierLabel,
+    .radiusLabel,
+    .latitudeLabel,
+    .longitudeLabel {
+        margin-bottom: 8px;
+        display: block;
+        font-size: 14px;
+        color: #333;
+    }
+
+    .categorySelect,
+    .maxAgeInput,
+    .networkAccessIdentifier,
+    .radius,
+    .latitudeInput,
+    .longitudeInput {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 16px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 16px;
+        color: #333;
+        box-sizing: border-box;
+
+        &:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+    }
+}
+
+.retrieveFooter {
+    display: flex;
+    justify-content: flex-end;
+    grid-gap: 25px;
+    margin-top: 12px;
+}
+
+
+.btnRetrieve {
+    background: linear-gradient(to right, #065b8b, #024277);
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 10px;
+    box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease-in-out;
+}
+
+.btnCancel {
+    background: linear-gradient(to right, #7a1e06, #d32405);
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 10px;
+    box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease-in-out;
+}
+
+.btnRetrieve:hover,
+.btnCancel:hover {
+    transform: scale(1.1);
+}
+
+.btnRetrieve:hover {
+    transform: scale(1.1);
+}
+
+.btnExtend {
+    width: 150px;
+    background: linear-gradient(to right, #06387a, #054ad3);
+    color: white;
+    border-radius: 10px;
+    box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease-in-out;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 1rem;
+    font-family: 'Roboto Slab', serif;
+    letter-spacing: 0.2px;
+    padding: 7px;
+    border: none;
+    height: 100%;
+}
+
+.btnExtend:disabled {
+    color: #130e0e;
+    background: rgb(140, 135, 135);
+    cursor: not-allowed;
+}
+
+.idContainer {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 100%;
+    height: 50px;
+    margin-bottom: 10px;
+}
+
+.idInput {
+    width: 70%;
+    box-sizing: border-box;
+    padding: 12px;
+    height: 100%;
+    margin: 0;
+}
+
+.idInput::placeholder {
+    font-family: 'Roboto Slab', serif;
+    letter-spacing: 0.2px;
+}
+
+.btnDelete {
+    width: 150px;
+    background: linear-gradient(to right, #7a1e06, #d32405);
+    color: white;
+    border-radius: 10px;
+    box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease-in-out;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 1rem;
+    font-family: 'Roboto Slab', serif;
+    letter-spacing: 0.2px;
+    padding: 7px;
+    border: none;
+    height: 100%;
+}
+
+.centerDiv {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    margin: 4rem 0;
+    width: 100%;
+}
+
+.inputError {
+    font-size: 14px;
+    color: #d32405;
+}
+
+@media screen and (max-width: 560px) {
+    .container {
+        width: 92%;
+    }
+}
+
+
+/* Keyframes for fading in the rows */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

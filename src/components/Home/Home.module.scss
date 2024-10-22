@@ -1,0 +1,73 @@
+.container {
+    width: 80%;
+    margin: 0 auto;
+    height: 100%;
+}
+
+.info {
+    font-size: 1.6rem;
+    text-align: center;
+    font-weight: 200;
+}
+
+.api {
+    text-align: center;
+}
+
+.availableApis {
+    list-style: none;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.availableApis li {
+    border: 1px solid transparent;
+    margin: 10px;
+    padding: 8px;
+    width: 50%;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border 0.3s ease;
+    cursor: pointer;
+    background: linear-gradient(45deg, #212121, #424242);
+    /* Dark gray/black gradient */
+    background-clip: padding-box;
+    position: relative;
+}
+
+.availableApis li:before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, #ff4081, #0340e9);
+    /* Pink to Green border gradient */
+    border-radius: inherit;
+    z-index: -1;
+}
+
+.availableApis li:hover {
+    transform: scale(1.03);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(2, 51, 228, 0.8);
+    /* Soft green border on hover */
+}
+
+.availableApis li a {
+    text-decoration: none;
+    color: #e0e0e0;
+    /* Light gray text */
+    font-size: 18px;
+    font-weight: bold;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.availableApis li:hover a {
+    color: #ff4081;
+    /* Pink text on hover */
+}

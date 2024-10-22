@@ -5,6 +5,14 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'Roboto Slab', serif;
+  height: 100vh;
+}
+
+#root {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  height: 100%;
 }
 
 .leaflet-container {

@@ -1,0 +1,28 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(93vh - 65px);
+    background: linear-gradient(135deg, #f09, #301a4b);
+}
+
+.content {
+    text-align: center;
+    color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: rgba(0, 0, 0, 0.5);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.title {
+    font-size: 48px;
+    margin-bottom: 16px;
+    letter-spacing: 2px;
+}
+
+.description {
+    font-size: 18px;
+    margin-top: 10px;
+    opacity: 0.8;
+}

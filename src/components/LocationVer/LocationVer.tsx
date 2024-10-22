@@ -4,10 +4,11 @@ import { FaLocationDot } from "react-icons/fa6";
 import axios from "axios";
 import Loading from "../Loading/Loading";
 import { isAxiosError } from "../../utils/isAxiosError";
-import { isValidEmail } from "../../utils/isValidEmail";
 import Alert from "../Alert/Alert";
+import { useSessionStorageBase64 } from "../../hooks/useSessionStorage";
 
 const LocationVer = () => {
+    const [storedValue] = useSessionStorageBase64('rpTkn', '');
     const [isActive, setIsActive] = useState<boolean>(false)
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
@@ -15,9 +16,9 @@ const LocationVer = () => {
 
 
     const [selectedDevice, setSelectedDevice] = useState("networkAccessIdentifier");
-    const [networkAccessIdentifier, setNetworkAccessIdentifier] = useState("");
+    const [deviceValue, setDeviceValue] = useState("");
     const [radius, setRadius] = useState<number | undefined>(undefined);
-    const [maxAge, setMaxAge] = useState<number | undefined>(undefined);
+    const [maxAge, setMaxAge] = useState<number | undefined>(60);
     const [longitude, setLongitude] = useState<number | undefined>(undefined);
     const [latitude, setLatitude] = useState<number | undefined>(undefined);
 
@@ -33,8 +34,8 @@ const LocationVer = () => {
         setSelectedDevice(e.target.value);
     };
 
-    const handleNetworkInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setNetworkAccessIdentifier(e.target.value);
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setDeviceValue(e.target.value);
     };
     const handleMaxAgeInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = parseFloat(e.target.value);
@@ -59,12 +60,15 @@ const LocationVer = () => {
         url: import.meta.env.VITE_LOC_VER_URL,
         headers: {
             'content-type': 'application/json',
-            'X-RapidAPI-Key': import.meta.env.VITE_RapidAPI_Key,
+            'X-RapidAPI-Key': storedValue,
             'X-RapidAPI-Host': import.meta.env.VITE_LOC_VER_HOST
         },
         data: {
             device: {
-                networkAccessIdentifier: networkAccessIdentifier,
+                ...(selectedDevice === "phoneNumber"
+                    ? { phoneNumber: deviceValue }
+                    : { networkAccessIdentifier: deviceValue }
+                )
             },
             area: {
                 center: {
@@ -83,14 +87,12 @@ const LocationVer = () => {
             return setError('Max age should be at least 60.');
         }
 
-        if (!isValidEmail(networkAccessIdentifier.trim())) {
-            return setError('Invalid network access identifier format.');
-        }
-        if (networkAccessIdentifier.trim() === '') {
+
+        if (deviceValue.trim() === '') {
             return setError('Network access identifier can not be empty.');
         }
         try {
-            console.log({ selectedDevice, networkAccessIdentifier, maxAge, radius, longitude, latitude })
+            console.log({ selectedDevice, deviceValue, maxAge, radius, longitude, latitude })
             setLoading(true)
 
             const response = await axios.request(options);
@@ -124,7 +126,7 @@ const LocationVer = () => {
                     errorMessage = 'An unexpected error occurred.';
                 }
 
-                setError(errorMessage);
+                setError(errorMessage.includes("Invalid API key") ? "Invalid API key" : errorMessage,);
             } else {
                 setError('An unexpected error occurred.');
             }
@@ -135,12 +137,15 @@ const LocationVer = () => {
     return (
         <div className={styles.container}>
             <h1 className={styles.title}>Location verification</h1>
-            <div className={styles.btnContainer}>
-                <button onClick={openModal} className={`${styles.btn} ${styles['btn-masterful']}`} disabled={loading || isActive}>
-                    <FaLocationDot className={styles.icon} />
-                    <span className={styles.btnTxt}>Verify location</span>
-                </button>
-            </div>
+            {
+                !isActive && <div className={styles.btnContainer}>
+                    <button onClick={openModal} className={`${styles.btn} ${styles['btn-masterful']}`} disabled={loading || isActive}>
+                        <FaLocationDot className={styles.icon} />
+                        <span className={styles.btnTxt}>Verify location</span>
+                    </button>
+                </div>
+            }
+
 
 
 
@@ -152,22 +157,42 @@ const LocationVer = () => {
                         </label>
                         <select id="categorySelect" className={styles.categorySelect} value={selectedDevice} onChange={handleDeviceChange}>
                             <option value="networkAccessIdentifier">Network Access Identifier</option>
-                            <option value="phoneNumber" disabled>Phone Number</option>
+                            <option value="phoneNumber">Phone Number</option>
                         </select>
                     </div>
 
                     <div className={styles.inputRow}>
-                        <label htmlFor="networkAccessIdentifier" className={styles.networkAccessIdentifierLabel}>
-                            Network Access Identifier
-                        </label>
-                        <input
-                            type="eamil"
-                            id="networkAccessIdentifier"
-                            className={styles.networkAccessIdentifier}
-                            onChange={handleNetworkInputChange}
-                            value={networkAccessIdentifier}
-                            placeholder="device@testcsp.net"
-                        />
+                        {
+                            selectedDevice == "phoneNumber" ?
+                                <>
+                                    <label htmlFor="phoneNumber" className={styles.networkAccessIdentifierLabel}>
+                                        Phone number
+                                    </label>
+                                    <input
+                                        type="tel"
+                                        id="phoneNumber"
+                                        className={styles.networkAccessIdentifier}
+                                        onChange={handleInputChange}
+                                        value={deviceValue}
+                                        placeholder="+3671234567"
+                                    /></>
+                                :
+                                <>
+                                    <label htmlFor="networkAccessIdentifier" className={styles.networkAccessIdentifierLabel}>
+                                        Network Access Identifier
+                                    </label>
+                                    <input
+                                        type="eamil"
+                                        id="networkAccessIdentifier"
+                                        className={styles.networkAccessIdentifier}
+                                        onChange={handleInputChange}
+                                        value={deviceValue}
+                                        placeholder="device@testcsp.net"
+                                    />
+                                </>
+
+                        }
+
                     </div>
                     <div className={styles.inputRow}>
                         <label htmlFor="latitude" className={styles.latitudeLabel}>
