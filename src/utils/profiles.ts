@@ -1,7 +1,10 @@
 const qosProfiles = [
+    'QOS_E',
     'QOS_M',
     'QOS_L',
     'QOS_S',
+    'QOS_XR',
+    'QOS_VC',
     'DOWNLINK_S_UPLINK_S',
     'DOWNLINK_S_UPLINK_M',
     'DOWNLINK_S_UPLINK_L',
