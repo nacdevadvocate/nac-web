@@ -5,9 +5,16 @@ import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
 import QoDPage from "./pages/QoDPage";
 import SimSwapPage from "./pages/SimSwapPage";
+import Terms from "./components/Terms/Terms";
+import { useSessionStorage } from "./hooks/useSessionStorage";
 
 
 function App() {
+    const [value, setValue] = useSessionStorage('tab',);
+
+    const handleAccept = () => {
+        setValue(1);
+    };
 
 
     return (
@@ -22,6 +29,7 @@ function App() {
                     <Route path="/sim-swap" element={<SimSwapPage />} />
                 </Routes>
                 <Toaster />
+                {!value && <Terms onAccept={handleAccept} />}
             </main>
             <Footer />
         </BrowserRouter>
