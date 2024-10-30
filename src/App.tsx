@@ -10,7 +10,7 @@ import { useSessionStorage } from "./hooks/useSessionStorage";
 
 
 function App() {
-    const [value, setValue] = useSessionStorage('tab',);
+    const [value, setValue] = useSessionStorage('terms',);
 
     const handleAccept = () => {
         setValue(1);
