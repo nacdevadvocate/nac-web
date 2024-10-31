@@ -17,7 +17,7 @@ const MapLocation: React.FC<MapProps> = ({ latitude, longitude }) => {
 
     return (
         <div className={styles.locationOfDevice}>
-            <MapContainer center={position} zoom={13} scrollWheelZoom={false}>
+            <MapContainer center={position} zoom={13} scrollWheelZoom={true}>
                 <TileLayer
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />

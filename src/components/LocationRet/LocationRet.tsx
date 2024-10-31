@@ -76,6 +76,7 @@ const LocationRet = () => {
         try {
             console.log({ selectedDevice, deviceValue, maxAge })
             setLoading(true)
+            setData("")
 
             const response = await axios.request(options);
 
