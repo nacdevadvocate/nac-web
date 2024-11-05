@@ -17,7 +17,7 @@ const LocationVer = () => {
 
     const [selectedDevice, setSelectedDevice] = useState("networkAccessIdentifier");
     const [deviceValue, setDeviceValue] = useState("");
-    const [radius, setRadius] = useState<number | undefined>(undefined);
+    const [radius, setRadius] = useState<number | undefined>(2000);
     const [maxAge, setMaxAge] = useState<number | undefined>(60);
     const [longitude, setLongitude] = useState<number | undefined>(undefined);
     const [latitude, setLatitude] = useState<number | undefined>(undefined);
@@ -233,7 +233,7 @@ const LocationVer = () => {
                             onChange={handleRadiusInputChange}
                             value={radius}
                             placeholder="10000"
-                            min={0}
+                            min={2000}
                         />
                     </div>
                     <div className={styles.inputRow}>

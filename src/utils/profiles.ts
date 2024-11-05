@@ -5,6 +5,8 @@ const qosProfiles = [
     'QOS_S',
     'QOS_XR',
     'QOS_VC',
+    'QOS_RVM',
+    'QOS_POSALE',
     'DOWNLINK_S_UPLINK_S',
     'DOWNLINK_S_UPLINK_M',
     'DOWNLINK_S_UPLINK_L',
