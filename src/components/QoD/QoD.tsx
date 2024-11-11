@@ -13,6 +13,13 @@ import { FormValues } from "../../types/sessionCreateTypes";
 import qosProfiles from "../../utils/profiles";
 
 
+
+interface IPv4Address {
+    publicAddress?: string;
+    privateAddress?: string;
+    publicPort?: number;
+}
+
 const QoD = () => {
     const [storedValue] = useSessionStorageBase64('rpTkn', '');
     const [value, setValue] = useSessionStorage('tab',);
@@ -88,7 +95,7 @@ const QoD = () => {
                 toast(errorMessage.includes("Invalid API key") ? "Invalid API key" : errorMessage,
                     {
                         icon: '❌',
-                        duration: 10000,
+                        duration: 6000,
                         style: {
                             borderRadius: '10px',
                             background: '#333',
@@ -102,7 +109,7 @@ const QoD = () => {
                 toast('An unexpected error occurred.',
                     {
                         icon: '❌',
-                        duration: 10000,
+                        duration: 6000,
                         style: {
                             borderRadius: '10px',
                             background: '#333',
@@ -178,7 +185,7 @@ const QoD = () => {
                 toast(errorMessage.includes("Invalid API key") ? "Invalid API key" : errorMessage,
                     {
                         icon: '❌',
-                        duration: 10000,
+                        duration: 6000,
                         style: {
                             borderRadius: '10px',
                             background: '#333',
@@ -192,7 +199,7 @@ const QoD = () => {
                 toast('An unexpected error occurred.',
                     {
                         icon: '❌',
-                        duration: 10000,
+                        duration: 6000,
                         style: {
                             borderRadius: '10px',
                             background: '#333',
@@ -278,7 +285,7 @@ const QoD = () => {
                 toast(errorMessage.includes("Invalid API key") ? "Invalid API key" : errorMessage,
                     {
                         icon: '❌',
-                        duration: 10000,
+                        duration: 6000,
                         style: {
                             borderRadius: '10px',
                             background: '#333',
@@ -292,7 +299,7 @@ const QoD = () => {
                 toast('An unexpected error occurred.',
                     {
                         icon: '❌',
-                        duration: 10000,
+                        duration: 6000,
                         style: {
                             borderRadius: '10px',
                             background: '#333',
@@ -415,11 +422,15 @@ const QoD = () => {
                 if (formValues.phoneNumber) sessData.device.phoneNumber = formValues.phoneNumber;
                 if (formValues.networkAccessIdentifier) sessData.device.networkAccessIdentifier = formValues.networkAccessIdentifier;
 
-                if (formValues.devicePublicIp || formValues.devicePublicPort) {
-                    sessData.device.ipv4Address = {
-                        publicAddress: formValues.devicePublicIp,
-                        publicPort: formValues.devicePublicPort,
-                    };
+                // Create the object with only the defined, truthy properties
+                const ipv4Address: Partial<IPv4Address> = {};  // Use Partial to allow optional properties
+                if (formValues.devicePublicIp) ipv4Address.publicAddress = formValues.devicePublicIp;
+                if (formValues.devicePrivateIp) ipv4Address.privateAddress = formValues.devicePrivateIp;
+                if (formValues.devicePublicPort) ipv4Address.publicPort = formValues.devicePublicPort;
+
+                // Only assign if at least two properties are present
+                if (Object.keys(ipv4Address).length >= 2) {
+                    sessData.device.ipv4Address = ipv4Address;
                 }
 
                 if (formValues.deviceIpv6) {
